@@ -1,7 +1,9 @@
-from flask import Flask, request, render_template, json, make_response
-import config
-from utils import xml_to_json, csv_to_json
+from flask import Flask, render_template, json
+from utils.to_json import xml_to_json, csv_to_json
 from models import Product
+import config
+import traceback
+import logging
 
 app = Flask(__name__)
 
@@ -19,28 +21,32 @@ def getJsonFile(filename):
   which is the filename and send back the
   in json format.
   """
-  if str(filename).endswith('.xml'):
-    data = xml_to_json()
+  try:
+    if str(filename).endswith('1'):
+      data = xml_to_json()
+      response = app.response_class(
+          response= data,
+          status=200,
+          mimetype='application/json'
+      )
+      return response
+    elif str(filename).endswith('2'):
+      data = csv_to_json()
+      response = app.response_class(
+          response=data, #json.dumps(data)
+          status=200,
+          mimetype='application/json'
+      )
+      return response
     response = app.response_class(
-        response= data,
-        status=200,
+        response= 'bad request!',
+        status= 404,
         mimetype='application/json'
     )
     return response
-  elif str(filename).endswith('.csv'):
-    data = csv_to_json()
-    response = app.response_class(
-        response=data, #json.dumps(data)
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-  response = app.response_class(
-      response= 'bad request!',
-      status= 404,
-      mimetype='application/json'
-  )
-  return response
+  except Exception as e:
+    logging.error(traceback.format_exc())
+    
 
 @app.errorhandler(404)
 def page_not_found(e):
