@@ -19,8 +19,8 @@ To install and run this repo you need:
 
 -   Python 3.3+
 -   Flask
--   virtualenv (not required if you are using Python 3.4)
--   git (only to clone this repository)
+-   virtualenv
+-   git 
 
 ##  Install & Setup
 -  Clone the project from Github
@@ -53,8 +53,7 @@ To install and run this repo you need:
 
 ## Architecture
 - The figure below shows an overall architecture 
- ![System architecture](system-architecture.png)
-
+	![System architecture](system-architecture.png)
 - The folder structure of the project is shown below:
 	```
 	ETL-Python
@@ -69,7 +68,9 @@ To install and run this repo you need:
 	└───templates
 	│   │   index.html
 	|	|	404.html
-	|	
+	|	| system-architecture.png
+	|	| batch-processing.png
+	|
 	└─── Models
 	│   │   product.py
 	│   
@@ -78,9 +79,17 @@ To install and run this repo you need:
 	|   |	brand2.csv
 	|   
 	└─── utils
-	    │   to_json.py
+	|   │   to_json.py
 	```
-
+## Batch Processing 
+ Multiple technologies can be used to do batch processing over big files such as:
+- Using WSGI HTTP Server Gunicorn where it provides two ways to decrease the time needed to do ETL
+	-  the number of threads handling requests
+	-   the number of worker processes
+	where it creates multiple processes to process several inputs at the same time without increasing the time
+	The figure below shows the architecture with Gunicorn proxy (can be used from Azure Function)
+	![Batch processing](system-architecture.png)
+- Using third-party services such as Cloud Data Fusion by Google Cloud Platform where it will do batch processing whenever there is new data
 ##  Usage
 To run flask server:
 ```
@@ -98,21 +107,21 @@ To deploy the functions to the cloud (ex. **Azure Function**, **Amazon AWS Lambd
 - Select “Kudu” as the build server
 - Now you will get Git Uri
 - To deploy:
-```
-$ git remote add <app name> <Git Uri> (app name is ETL-Python)
-$ git commit -a -m “first deploy”
-$ git push ETL-Python master
-```
+	```
+	$ git remote add <app name> <Git Uri> (app name is ETL-Python)
+	$ git commit -a -m “first deploy”
+	$ git push ETL-Python master
+	```
 - If nothing changed after refreshing the URL, you need to change the main module (which is app.py), so you need to change the startup file from the application settings, click save.
 - Refresh the page now to see the changes
 ### Amazon AWS Lambda:
 - You will need to setup AWS credentials with key id in your machine after creating the resources 
 - Follow the steps below
-```
-$ pip install zappa
-$ zappa init
-$ zappa deploy
-```
+	```
+	$ pip install zappa
+	$ zappa init
+	$ zappa deploy
+	```
 
 ## Author
 > Aghyad Alahmad
