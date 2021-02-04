@@ -4,10 +4,10 @@ This repo contains Take-home Assignment for Tamanna Company.
 In this little project, is to build an ETL (Extract, Transform, Load) to import products from multiple data sources.
 
 ## Description:
-| Dataset Name   |           format              |Size in rows|description  |
-|----------------|-------------------------------|-----------------------------|---|
-|Products from brand 1|`XML`            |100            |Information about the products that brand 1 sells. For example, Shoes, T-Shirts, etc (Brand Product Data 1.xml)|
-|Products from brand 2|`CSV`            |200          |Information about the products that brand 2 sells. For example, Accessories like Jewelry, Bags, etc (Brand Product Data 2.csv)|
+| Dataset Name   |           format              |description  |
+|--------------------|-------------------------|---|
+|Products from brand 1|`XML`           |Information about the products that brand 1 sells. For example, Shoes, T-Shirts, etc (Brand Product Data 1.xml)|
+|Products from brand 2|`CSV`             |Information about the products that brand 2 sells. For example, Accessories like Jewelry, Bags, etc (Brand Product Data 2.csv)|
 
 Each of these brands provides a snapshot of all active products readily available in their inventory as data files of different formats (CSV, XML, JSON, etc.). The project will support mainly two functions
 - XML -> JSON
@@ -56,17 +56,19 @@ To install and run this repo you need:
 
 - The folder structure of the project is shown below:
 	```
-	project
-	│   README.md
+	ETL-Python
 	│   .gitignore   
 	|	.env
+	│   README.md
 	│	requirements.txt
 	|	app.py
 	|	config.py
-	|
+	|	server.log
+	|	
 	└───templates
 	│   │   index.html
-	|
+	|	|	404.html
+	|	
 	└─── Models
 	│   │   product.py
 	│   
@@ -75,8 +77,7 @@ To install and run this repo you need:
 	|   |	brand2.csv
 	|   
 	└─── utils
-	    │   xml_to_json.py
-	    |	csv_to_json.py
+	    │   to_json.py
 	```
 
 ##  Usage
@@ -87,13 +88,29 @@ flask run
 > `server.log` file keeps a log of all information, errors and warnings
 ## Deployment
 To deploy the functions to the cloud (ex. **Azure Function**, **Amazon AWS Lambda**):
-Azure Function:
+### Azure Function:
+- Configure Azure service
+- Create a resource group
+- Create a web app (Choose Linux as OS, Runtime Stack is Python 3.7+)
+- Create an App Service Plan
+- Go to “Deployment center”, and select “Local Git”
+- Select “Kudu” as the build server
+- Now you will get Git Uri
+- To deploy:
 ```
-...
+$ git remote add <app name> <Git Uri> (app name is ETL-Python)
+$ git commit -a -m “first deploy”
+$ git push ETL-Python master
 ```
-Amazon AWS Lambda:
+- If nothing changed after refreshing the URL, you need to change the main module (which is app.py), so you need to change the startup file from the application settings, click save.
+- Refresh the page now to see the changes
+### Amazon AWS Lambda:
+- You will need to setup AWS credentials with key id in your machine after creating the resources 
+- Follow the steps below
 ```
-...
+$ pip install zappa
+$ zappa init
+$ zappa deploy
 ```
 
 ## Author
