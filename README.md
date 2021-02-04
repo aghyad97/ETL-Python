@@ -53,6 +53,7 @@ To install and run this repo you need:
 
 ## Architecture
 - The figure below shows an overall architecture 
+ ![System architecture](system-architecture.png)
 
 - The folder structure of the project is shown below:
 	```
