@@ -1,6 +1,5 @@
 # ETL-Python
 
-This repo contains Take-home Assignment for Tamanna Company.
 In this little project, is to build an ETL (Extract, Transform, Load) to import products from multiple data sources.
 
 ## Description:
